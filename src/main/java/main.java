@@ -1,15 +1,23 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import javax.lang.model.element.Element;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.*;
 import javax.swing.*;
 public class main {
-    static WebDriver driver = new ChromeDriver();
-    static JFrame frame = new JFrame("ASSIGNMENTS");
 
+    static WebDriver driver = new ChromeDriver();
+    static JTextField Username = new JTextField("Username",20);
+    static JTextField password = new JTextField("Password",20);
+    static JFrame frame = new JFrame("ASSIGNMENTS");
+    static boolean on = true;
+    static String usname = " ";
+    static JFrame tempF = new JFrame("Get Assingments");
     public static void initJFrame(List<String> value){
         frame.setSize(300,500);
         frame.setVisible(true);
@@ -39,6 +47,41 @@ public class main {
 
     }
 
+    public static void getInfo(){
+        JPanel pan = new JPanel(new GridBagLayout());
+        GridBagConstraints cs = new GridBagConstraints();
+
+        tempF.setSize(500,400);
+        tempF.setVisible(true);
+        tempF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        cs.anchor = GridBagConstraints.PAGE_START;
+
+        cs.gridx = 1;
+        cs.gridy = 0;
+        pan.add(Username, cs);
+
+
+        cs.gridx = 1;
+        cs.gridy = 1;
+        pan.add(password, cs);
+        JButton enter = new JButton("Enter");
+        cs.gridx = 1;
+        cs.gridy = 2;
+        pan.add(enter,cs);
+        tempF.add(pan);
+        pan.revalidate();
+        tempF.revalidate();
+
+        enter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                on = false;
+            }
+        });
+
+
+
+    }
 
     public static void closeTabs(String originalHandle){
         for(String handle : driver.getWindowHandles()) {
@@ -84,9 +127,9 @@ public class main {
             e.printStackTrace();
         }
     }
-    public static void login(){
-        String password = "T1i2a3p4";
-        driver.findElement(By.id("Username")).sendKeys("hberker19");
+    public static void login(String user, String pass){
+        String password = pass;
+        driver.findElement(By.id("Username")).sendKeys(user);
         for (int i = 0; i < password.length(); i++) {
             if(password.substring(i,i + 1).equals("3")){
                 driver.findElement(By.id("Password")).sendKeys(Keys.NUMPAD3);
@@ -103,12 +146,29 @@ public class main {
 
     }
     public static void main(String[] args){
+        String[] UP = new String[2];
+        getInfo();
+        while(on){
+            System.out.print(" ");
+        }
+        System.out.println();
+        System.out.println("!!");
+
+        UP[0] = Username.getText();
+        UP[1] = password.getText();
+
+        System.out.println(UP[0] + " a " + UP[1]);
+        tempF.dispose();
+
+        wait(8);
+
         String url = "https://cranbrook.myschoolapp.com/app#login";
         driver.get("https://cranbrook.myschoolapp.com/app/student#calendar");
         wait(5);
         String originalHandle = driver.getWindowHandle();
         closeTabs(originalHandle);
-        login();
+
+        login(UP[0],UP[1]);
         wait(5);
         driver.findElement(By.id("fc-day-button")).click();
         originalHandle = driver.getWindowHandle();
