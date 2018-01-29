@@ -30,7 +30,7 @@ public class main {
         c.anchor = GridBagConstraints.PAGE_START;
 
         for (String i: value) {
-            JLabel temp = new JLabel(String.valueOf(value));
+            JLabel temp = new JLabel(String.valueOf(i));
             assins.add(temp);
         }
         for (int i  = 0; i < assins.size();i++) {
